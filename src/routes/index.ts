@@ -1,5 +1,7 @@
 import {Router} from "express";
-import { authRouter } from "./authRouters";
+import { rbacRouter } from "../rbac";
 export const router = Router();
 
-router.use("/authenticate", authRouter)
+router.use("/rbac", rbacRouter )
+
+//Same for Subhbamay's auth router
