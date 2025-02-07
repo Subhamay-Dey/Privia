@@ -1,4 +1,5 @@
 import prisma from "../../utils/prisma";
+import bcrypt from "bcrypt";
 
 interface RegisterBody {
     username: string,
@@ -26,11 +27,15 @@ class RegisterController {
                 })
             }
 
+            //Encrypting the password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(body.password, salt);
+
             await prisma.user.create({
                 data:{
                     username: body.username,
                     email: body.email,
-                    password: body.password,
+                    password: hashedPassword,
                 }
             })
 
