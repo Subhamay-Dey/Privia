@@ -17,7 +17,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
-app.use("/api", router);
+app.use("/api/privia", router);
 
 app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`)

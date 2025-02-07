@@ -1,6 +1,7 @@
 import prisma from "../../utils/prisma";
 import bcrypt from "bcrypt";
 import { registerSchema } from "../validations/registerValidation";
+import { Request, Response } from "express";
 
 interface RegisterBody {
     username: string,
@@ -15,6 +16,8 @@ class RegisterController {
         try {
             const body:RegisterBody = req.body;
             const payload = registerSchema.parse(body)
+
+            console.log(payload);
 
             let findUser = await prisma.user.findUnique({
                 where: {
