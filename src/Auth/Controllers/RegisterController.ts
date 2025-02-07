@@ -1,5 +1,6 @@
 import prisma from "../../utils/prisma";
 import bcrypt from "bcrypt";
+import { registerSchema } from "../validations/registerValidation";
 
 interface RegisterBody {
     username: string,
@@ -13,10 +14,11 @@ class RegisterController {
         
         try {
             const body:RegisterBody = req.body;
+            const payload = registerSchema.parse(body)
 
             let findUser = await prisma.user.findUnique({
                 where: {
-                    email: body.email
+                    email: payload.email
                 }
             })
             if(findUser) {
@@ -29,12 +31,12 @@ class RegisterController {
 
             //Encrypting the password
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(body.password, salt);
+            const hashedPassword = await bcrypt.hash(payload.password, salt);
 
             await prisma.user.create({
                 data:{
-                    username: body.username,
-                    email: body.email,
+                    username: payload.username,
+                    email: payload.email,
                     password: hashedPassword,
                 }
             })
