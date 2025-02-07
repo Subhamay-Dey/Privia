@@ -10,6 +10,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true
   }));
+
 app.use(express.json());
 
 dotenv.config();
@@ -20,4 +21,4 @@ app.use("/api", router);
 
 app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`)
-})
+});
