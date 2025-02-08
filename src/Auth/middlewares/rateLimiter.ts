@@ -62,3 +62,22 @@ export const authRateLimiter = rateLimit({
     return false;
   },
 });
+
+// User-Specific Rate Limiter (For authenticated users)
+export const userRateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 500, // Limit each authenticated user to 500 requests per hour
+  keyGenerator: (req: any) => req.user?.id || req.ip!, // Identify users by user ID if logged in, else IP
+  handler: (req: any, res: any) => {
+    res.status(429).json({ error: "You have reached your request limit." });
+  },
+  async requestWasSuccessful(req: any) {
+    const userKey = req.user?.id || req.ip!;
+    const currentRequests = await getRequestCount(userKey);
+    if (currentRequests < 500) {
+      await updateRequestCount(userKey);
+      return true;
+    }
+    return false;
+  },
+});
