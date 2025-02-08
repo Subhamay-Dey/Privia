@@ -3,17 +3,16 @@ import jwt from "jsonwebtoken";
 
 
 export const verifyAdmin = (req:any, res:any, next:NextFunction) => {
-
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if(!token) return res.status(400).json({
-        message: "Token not found"
-    })
-
-    console.log(`Token found is: ${token}`);
     
-
     try {
+        const token = req.headers.authorization?.split(" ")[1];
+    
+        if(!token) return res.status(400).json({
+            message: "Token not found"
+        })
+    
+        console.log(`Token found is: ${token}`);
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { role: string };
 
         console.log(`Decoded role from token is = ${decoded.role}`);
