@@ -24,3 +24,22 @@ const updateRequestCount = async (ip: string) => {
     [ip]
   );
 };
+
+// Global Rate Limiter (Applies to all routes)
+export const globalRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // Limit each IP to 200 requests per window
+  keyGenerator: (req: any) => req.ip!,
+  handler: (req: any, res: any) => {
+    res.status(429).json({ error: "Too many requests, slow down!" });
+  },
+  async requestWasSuccessful(req: any) {
+    const ip = req.ip!;
+    const currentRequests = await getRequestCount(ip);
+    if (currentRequests < 200) {
+      await updateRequestCount(ip);
+      return true;
+    }
+    return false;
+  },
+});
