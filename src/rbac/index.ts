@@ -1,10 +1,8 @@
 import { Router } from "express";
+import { adminRouter } from "./routes/adminRouter";
 
 export const rbacRouter = Router();
 
-rbacRouter.get("/", (req, res) => {
-    res.status(201).json({
-        message:"Rbac system router working successfully :)"
-    })
-})
+rbacRouter.use("/", adminRouter);
+
 
