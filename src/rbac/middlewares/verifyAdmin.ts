@@ -1,6 +1,13 @@
 import { NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
+interface JwtPayload{
+    id: string;
+    role: string;
+    username: string;
+    email: string;
+}
+
 
 export const verifyAdmin = (req:any, res:any, next:NextFunction) => {
     
@@ -13,7 +20,7 @@ export const verifyAdmin = (req:any, res:any, next:NextFunction) => {
     
         console.log(`Token found is: ${token}`);
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { role: string };
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
 
         console.log(`Decoded role from token is = ${decoded.role}`);
         
