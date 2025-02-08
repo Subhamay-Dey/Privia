@@ -1,5 +1,5 @@
 class LogoutController{
-    static async logout(req:any, res:any) {
+    static async logout(req:any, res:any): Promise<void> {
         try {
             return res.status(200).json({ 
                 message: "Logged out successfully"
