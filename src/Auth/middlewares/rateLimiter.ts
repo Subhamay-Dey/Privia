@@ -43,3 +43,22 @@ export const globalRateLimiter = rateLimit({
     return false;
   },
 });
+
+// Login/Register Rate Limiter (Stricter limits for authentication routes)
+export const authRateLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 10, // Limit login/register to 10 attempts per IP
+  keyGenerator: (req: any) => req.ip!,
+  handler: (req: any, res: any) => {
+    res.status(429).json({ error: "Too many login attempts, try again later." });
+  },
+  async requestWasSuccessful(req: any) {
+    const ip = req.ip!;
+    const currentRequests = await getRequestCount(ip);
+    if (currentRequests < 10) {
+      await updateRequestCount(ip);
+      return true;
+    }
+    return false;
+  },
+});
