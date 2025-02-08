@@ -7,7 +7,7 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY = '7d';
 
-const refreshTokenController = async (req:any, res:any) => {
+export const refreshTokenController = async (req:any, res:any) => {
     try {
         const { refreshToken } = req.body;
 
@@ -90,5 +90,3 @@ const refreshTokenController = async (req:any, res:any) => {
         });
     }
 };
-
-module.exports = { refreshTokenController };
