@@ -20,7 +20,7 @@ export const verifyAdmin = (req:any, res:any, next:NextFunction) => {
     
         console.log(`Token found is: ${token}`);
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+        const decoded = jwt.verify(token, process.env.SECRET_KEY as string) as JwtPayload;
 
         console.log(`Decoded role from token is = ${decoded.role}`);
         
